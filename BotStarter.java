@@ -38,7 +38,7 @@ public class BotStarter {
     TreeNode root = new TreeNode(f.mCols);
     root.setField(f);
     root.setId(botId);
-    for(int i = 0; i < 10000; i++) {
+    for(int i = 0; i < 100000; i++) {
       root.selectAction();
     }
     return root.mostVisitedCol();

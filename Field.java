@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class Field {
   private int[][] mBoard;
-  public int mCols = 0, mRows = 0;
+  public int mCols = 7, mRows = 6;
   private String mLastError = "";
   public int mLastColumn = 0;
   private int winningId;
@@ -156,7 +156,7 @@ public class Field {
 
   public Boolean isWinningBoard() {
     // Horizontal
-    for (int i = 0; i < mCols - 4; i++) {
+    for (int i = 0; i < mCols - 3; i++) {
       for (int j = 0; j < mRows; j++) {
         if ( mBoard[i][j] != 0 &&
             mBoard[i][j] == mBoard[i+1][j] &&
@@ -169,12 +169,12 @@ public class Field {
       }
     }
     // Vertical
-    for (int j = 0; j < mRows - 4; j++) {
+    for (int j = 0; j < mRows - 3; j++) {
       for (int i = 0; i < mCols; i++) {
         if ( mBoard[i][j] != 0 &&
             mBoard[i][j] == mBoard[i][j+1] &&
-            mBoard[i][j+2] == mBoard[i][j+2] &&
-            mBoard[i][j+3] == mBoard[i][j+3])
+            mBoard[i][j+1] == mBoard[i][j+2] &&
+            mBoard[i][j+2] == mBoard[i][j+3])
         {
           winningId = mBoard[i][j];
           return true;
@@ -185,8 +185,8 @@ public class Field {
       return false;
     }
     // Diagonal like this \ and like this /
-    for (int i = 0; i < mCols - 4; i++) {
-      for (int j = 0; j < mRows - 4; j++) {
+    for (int i = 0; i < mCols - 3; i++) {
+      for (int j = 0; j < mRows - 3; j++) {
         if ( mBoard[i][j] != 0 &&
             (( mBoard[i][j+3] == mBoard[i+1][j+2] &&
               mBoard[i+1][j+2] == mBoard[i+2][j+1] &&
@@ -275,5 +275,14 @@ public class Field {
    */
   public int getNrRows() {
     return mRows;
+  }
+  
+  public void print() {
+    for(int y = 0; y < mRows; y++) {
+      for(int x = 0; x < mCols; x++) {
+        System.out.print(mBoard[x][y]);
+      }
+      System.out.println();
+    }
   }
 }

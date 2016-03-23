@@ -66,13 +66,29 @@ public class BotParser {
         if (parts[2].equals("field")) {
           String data = parts[3];
           mField.parseFromString(data); /* Parse Field with data */
-          System.out.println(mField.isWinningBoard());
         }
       } else if(parts[0].equals("action")) {
         if (parts[1].equals("move")) { /* move requested */
           int column = bot.makeTurn(mField, mBotId);
           System.out.println("place_disc " + column);
+        } else if(parts[1].equals("play")) {
+          int column = bot.makeTurn(mField, mBotId);
+          mField.addDisc(column, mBotId);
+          mField.print();
         }
+      } else if(parts[0].equals("move")) {
+        int col = Integer.parseInt(parts[1]);
+        int player;
+        if(parts.length < 3) {
+          player = mBotId == 1 ? 2 : 1;
+        }
+        else {
+          player = Integer.parseInt(parts[2]);
+        }
+        mField.addDisc(col, player);
+        mField.print();
+      } else if (parts[0].equals("win?")) {
+          System.out.println(mField.isWinningBoard());
       }
       else { 
         System.out.println("unknown command");

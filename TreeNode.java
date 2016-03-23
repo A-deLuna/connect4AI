@@ -17,9 +17,10 @@ public class TreeNode {
   TreeNode(int actions) {
     this.nActions = actions;
   }
-  TreeNode(int actions, int col) {
+  TreeNode(int actions, int col, int id) {
     this.nActions = actions;
     this.mCol = col;
+    this.mId = id;
   }
 
   void setField(Field f) {
@@ -27,7 +28,7 @@ public class TreeNode {
   }
 
   void setId (int id) {
-    this.mId = id;
+    this.mId = id == 1 ? 2 : 1;
   }
 
   public int mostVisitedCol() {
@@ -44,7 +45,7 @@ public class TreeNode {
   public void selectAction() {
     List<TreeNode> visited = new LinkedList<TreeNode>();
     TreeNode cur = this;
-    visited.add(this);
+    // visited.add(this);
     while (!cur.isLeaf()) {
       cur = cur.select();
       visited.add(cur);
@@ -52,25 +53,29 @@ public class TreeNode {
     cur.expand();
     TreeNode newNode = cur.select();
     visited.add(newNode);
-    double value = rollOut(newNode, visited);
+    int value = rollOut(newNode, visited);
     for (TreeNode node : visited) {
       // would need extra logic for n-player game
       node.updateStats(value);
     }
+    nVisits++;
   }
 
   public void expand() {
     children = new TreeNode[nActions];
     for (int i=0; i<nActions; i++) {
-      children[i] = new TreeNode(nActions, i);
+      int id = this.mId == 1 ? 2 : 1;
+      children[i] = new TreeNode(nActions, i, id);
     }
   }
 
   private TreeNode select() {
     TreeNode selected = null;
-    double bestValue = Double.MIN_VALUE;
+    TreeNode help = this;
+    double uctValue = 0.0d;
+    double bestValue = -1000000000d;
     for (TreeNode c : children) {
-      double uctValue = c.totValue / (c.nVisits + epsilon) +
+      uctValue = c.totValue / (c.nVisits + epsilon) +
              Math.sqrt(Math.log(nVisits+1) / (c.nVisits + epsilon)) +
                r.nextDouble() * epsilon;
       // small random number to break ties randomly in unexpanded nodes
@@ -85,17 +90,17 @@ public class TreeNode {
   public boolean isLeaf() {
     return children == null;
   }
-
-  public double rollOut(TreeNode tn, List<TreeNode> visited) {
+  // 0 tie, 1 
+  public int rollOut(TreeNode tn, List<TreeNode> visited) {
     Field fieldClone = mField.clone();
-    int id = mId;
+    int id = mId == 1 ? 2: 1;
     for (TreeNode node : visited) {
       fieldClone.addDisc(node.mCol, id);
       if(!fieldClone.continueGame()) {
         if(fieldClone.isFull()) {
           return 0;
         }
-        return fieldClone.idWon(mId) ? 1 : -1;
+        return id;
       }
       id = (id == 1) ? 2 : 1;
     }
@@ -109,12 +114,24 @@ public class TreeNode {
     if(fieldClone.isFull()) {
       return 0;
     }
-
-    return fieldClone.idWon(mId) ? 1 : -1;
+    id = (id == 1) ? 2 : 1;
+    return id;
     
   }
 
-  public void updateStats(double value) {
+  public void updateStats(int won) {
+    double value;
+    if(won == 0) {
+        value = 0.0d;
+    }
+    else {
+        if(this.mId == won) {
+            value = 1.0d;
+        }
+        else {
+            value = -1.0d;
+        }
+    }
     nVisits++;
     totValue += value;
   }

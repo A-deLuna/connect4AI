@@ -14,7 +14,6 @@
 //  
 //  For the full copyright and license information, please view the LICENSE
 //  file that was distributed with this source code.
-package bot;
 import java.util.Scanner;
 
 /**
@@ -87,7 +86,8 @@ public class BotParser {
         mField.addDisc(col, player);
         mField.print();
       } else if (parts[0].equals("win?")) {
-          System.out.println(mField.isWinningBoard());
+          boolean ans = mField.isWinningBoard();
+          System.out.println(ans);
       } else if(parts[0].equals("print")) {
         mField.print();
       }

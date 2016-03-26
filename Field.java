@@ -15,7 +15,6 @@
 //  For the full copyright and license information, please view the LICENSE
 //  file that was distributed with this source code.
 
-package bot;
 import java.util.List;
 import java.util.ArrayList;
 /**
@@ -186,7 +185,7 @@ public class Field {
     // Diagonal like this \ and like this /
     for (int i = 0; i < mCols - 3; i++) {
       for (int j = 0; j < mRows - 3; j++) {
-        if ( mBoard[i][j] != 0 &&
+        if ( (mBoard[i][j] != 0 || mBoard[i][j+3] != 0)&&
             (( mBoard[i][j+3] == mBoard[i+1][j+2] &&
               mBoard[i+1][j+2] == mBoard[i+2][j+1] &&
               mBoard[i+2][j+1] == mBoard[i+3][j+0]) ||

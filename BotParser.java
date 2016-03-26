@@ -14,7 +14,6 @@
 //  
 //  For the full copyright and license information, please view the LICENSE
 //  file that was distributed with this source code.
-
 package bot;
 import java.util.Scanner;
 
@@ -89,6 +88,8 @@ public class BotParser {
         mField.print();
       } else if (parts[0].equals("win?")) {
           System.out.println(mField.isWinningBoard());
+      } else if(parts[0].equals("print")) {
+        mField.print();
       }
       else { 
         System.out.println("unknown command");

@@ -35,11 +35,12 @@ public class BotStarter {
 *
 * @return The column where the turn was made.
 */public int makeTurn(Field f, int botId) {
-    TreeNode root = new TreeNode(f.mCols);
+    TreeNode root = new TreeNode();
     root.setField(f);
     root.setId(botId);
     for(int i = 0; i < 100000; i++) {
       root.selectAction();
+     
     }
     return root.mostVisitedCol();
   }

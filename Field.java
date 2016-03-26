@@ -37,7 +37,6 @@ public class Field {
     mBoard = new int[columns][rows];
     mCols = columns;
     mRows = rows;
-    clearBoard();
   }
   
   public Field clone() {
